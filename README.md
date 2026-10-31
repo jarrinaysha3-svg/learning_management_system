@@ -31,15 +31,16 @@ A full-stack learning management system built with Django. Instructors create co
 
 Aysha Jarrin - [GitHub](https://github.com/jarrinaysha3-svg)
 
-<img width="1440" height="814" alt="Screenshot 2026-11-01 at 12 33 38 AM" src="https://github.com/user-attachments/assets/7356d850-084c-4de8-a242-a1733d6ec37a" />
-<img width="1440" height="900" alt="Screenshot 2026-11-01 at 12 35 10 AM" src="https://github.com/user-attachments/assets/e0ee6134-b191-477c-9eb3-3fca12f5d3b3" />
-<img width="1440" height="900" alt="Screenshot 2026-11-01 at 12 35 08 AM" src="https://github.com/user-attachments/assets/4507d275-8c93-49f2-a392-77b3d12094d1" />
-<img width="1440" height="900" alt="Screenshot 2026-11-01 at 12 35 05 AM" src="https://github.com/user-attachments/assets/4d077bf6-c9bf-4fc5-aa72-9c99f39a1ede" />
-<img width="1440" height="900" alt="Screenshot 2026-11-01 at 12 35 02 AM" src="https://github.com/user-attachments/assets/92cadbfa-c687-45cf-a74f-427aaaf55e73" />
-<img width="1440" height="808" alt="Screenshot 2026-11-01 at 12 38 37 AM" src="https://github.com/user-attachments/assets/42e76913-99c2-4108-9ec0-d1808153961b" />
-<img width="1440" height="809" alt="Screenshot 2026-11-01 at 12 37 09 AM" src="https://github.com/user-attachments/assets/8c12eba4-9883-4619-be40-dde65eff38a0" />
-<img width="1440" height="811" alt="Screenshot 2026-11-01 at 12 38 05 AM" src="https://github.com/user-attachments/assets/9d0f2fda-e5ad-4393-b623-aa2c588b4d58" />
-<img width="1440" height="811" alt="Screenshot 2026-11-01 at 12 37 38 AM" src="https://github.com/user-attachments/assets/a4a641fe-4bf2-4acb-8f97-f8d2088e7faa" />
+<img width="1440" height="808" alt="Screenshot 2026-11-01 at 12 46 34 AM" src="https://github.com/user-attachments/assets/d3cf9f5a-277c-422c-bcc1-76e9eae63a04" />
+<img width="1440" height="810" alt="Screenshot 2026-11-01 at 12 44 54 AM" src="https://github.com/user-attachments/assets/f7d93c2a-a882-4363-9ca5-7371f8533e69" />
+<img width="1440" height="814" alt="Screenshot 2026-11-01 at 12 33 38 AM" src="https://github.com/user-attachments/assets/0aa7ecab-47f3-4b83-901b-b99d7765a2c5" />
+<img width="1440" height="808" alt="Screenshot 2026-11-01 at 12 38 37 AM" src="https://github.com/user-attachments/assets/b1b4582c-2825-45aa-a3b1-f83791364417" />
+<img width="1439" height="807" alt="Screenshot 2026-11-01 at 12 43 40 AM" src="https://github.com/user-attachments/assets/d505082d-2316-45ad-b7d7-be217dd722d7" />
+<img width="1440" height="809" alt="Screenshot 2026-11-01 at 12 37 09 AM" src="https://github.com/user-attachments/assets/c99a5d6c-31ae-48a6-9eb3-9a9c9209246b" />
+<img width="1097" height="609" alt="Screenshot 2026-11-01 at 12 42 19 AM" src="https://github.com/user-attachments/assets/8699e883-84fb-4d4b-92e6-27c142978861" />
+<img width="1440" height="811" alt="Screenshot 2026-11-01 at 12 38 05 AM" src="https://github.com/user-attachments/assets/a5dbd017-f719-4e96-ab61-134e2b589db6" />
+<img width="1440" height="811" alt="Screenshot 2026-11-01 at 12 37 38 AM" src="https://github.com/user-attachments/assets/79881d5d-a4a7-4979-aaae-586be44887b4" />
+
 
 
 
