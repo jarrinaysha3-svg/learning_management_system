@@ -1,0 +1,40 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>My Courses</h1>
+<a href="{% url 'add_course' %}" class="btn btn-primary mb-3">Add Course</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Lessons</th>
+            <th>Students</th>
+            <th>Action</th>
+            <th>Action</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in courses %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{data.title}}</td>
+            <td>{{data.approval_status}}</td>
+            <td>{{data.lesson_count}}</td>
+            <td>{{data.enrolled_count}}</td>
+            <td><a href="{% url 'course_detail' data.id %}" class="btn btn-info">View</a></td>
+            <td><a href="{% url 'update_course' data.id %}" class="btn btn-primary">Edit</a></td>
+            <td><a href="{% url 'delete_course' data.id %}" class="btn btn-danger">Delete</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="8">You have not created any course yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>Quiz Result</h1>
+<div class="card mb-3">
+    <div class="card-header">{{attempt.quiz.title}}</div>
+    <div class="card-body">
+        <h3>{{attempt.score}} / {{attempt.total}} ({{attempt.percentage}}%)</h3>
+        <p>Pass mark: {{attempt.quiz.pass_mark}}%</p>
+        {% if attempt.passed %}
+        <div class="alert alert-success">Congratulations, you passed!</div>
+        {% else %}
+        <div class="alert alert-danger">You did not reach the pass mark. You can try again.</div>
+        {% endif %}
+    </div>
+</div>
+<a href="{% url 'take_quiz' attempt.quiz.id %}" class="btn btn-primary">Try Again</a>
+<a href="{% url 'course_detail' attempt.quiz.course.id %}" class="btn btn-secondary">Back to Course</a>
+{% endblock content %}

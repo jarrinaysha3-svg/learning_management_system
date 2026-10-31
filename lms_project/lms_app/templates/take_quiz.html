@@ -1,0 +1,51 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>{{quiz.title}}</h1>
+<p>Course: {{quiz.course.title}} | Pass mark: {{quiz.pass_mark}}%</p>
+
+<form method="POST">
+    {% csrf_token %}
+    {% for question in questions %}
+    <div class="card mb-3">
+        <div class="card-header">Q{{forloop.counter}}. {{question.text}}</div>
+        <div class="card-body">
+            {% for choice in question.choices.all %}
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="question_{{question.id}}" id="choice_{{choice.id}}" value="{{choice.id}}">
+                <label class="form-check-label" for="choice_{{choice.id}}">{{choice.text}}</label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-success">Submit Quiz</button>
+    <a href="{% url 'course_detail' quiz.course.id %}" class="btn btn-secondary">Cancel</a>
+</form>
+
+{% if attempts %}
+<h4 class="mt-4">Previous Attempts</h4>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Score</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for attempt in attempts %}
+        <tr>
+            <td>{{attempt.attempted_at}}</td>
+            <td>{{attempt.score}} / {{attempt.total}} ({{attempt.percentage}}%)</td>
+            <td>{% if attempt.passed %}<span class="badge bg-success">Passed</span>{% else %}<span class="badge bg-danger">Failed</span>{% endif %}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock content %}

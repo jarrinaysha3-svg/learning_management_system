@@ -1,0 +1,15 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>{{title}}</h1>
+<p>Are you sure you want to delete <strong>{{object_name}}</strong>? This cannot be undone.</p>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% if cancel_id %}{% url cancel_url cancel_id %}{% else %}{% url cancel_url %}{% endif %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock content %}

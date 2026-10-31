@@ -1,0 +1,27 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>Profile Information</h1>
+<p>Username: {{request.user.username}}</p>
+<p>Email: {{request.user.email}}</p>
+
+{% if profile %}
+<p>Name: {{profile.name}}</p>
+<p>Role: {% if request.user.is_superuser %}Admin{% else %}{{profile.role}}{% endif %}</p>
+<p>Bio: {{profile.bio|default:"Not added yet."}}</p>
+<p>Picture:</p>
+{% if profile.image %}
+<img src="{{profile.image.url}}" alt="Profile Picture" width="90" height="90">
+{% else %}
+<p>No profile picture uploaded.</p>
+{% endif %}
+{% else %}
+<p>Your profile is not set up yet.</p>
+{% endif %}
+
+<p><a href="{% url 'profile_update_view' %}" class="btn btn-primary">Update Profile</a></p>
+{% endblock content %}

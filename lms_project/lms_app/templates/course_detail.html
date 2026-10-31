@@ -1,0 +1,95 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>{{course.title}}</h1>
+{% if course.approval_status != 'Approved' %}
+<span class="badge bg-warning text-dark">{{course.approval_status}}</span>
+{% endif %}
+
+{% if course.thumbnail %}
+<img src="{{course.thumbnail.url}}" alt="{{course.title}}" class="img-fluid my-3" style="max-height: 300px;">
+{% endif %}
+
+<p>Category: {{course.category.name|default:"None"}}</p>
+<p>Level: {{course.level}}</p>
+<p>Instructor: {{course.instructor.user_profile.name|default:course.instructor.username}}</p>
+<p>Rating: {{course.average_rating}} / 5</p>
+<p>{{course.description}}</p>
+
+{% if request.user.user_profile.role == 'Student' and course.approval_status == 'Approved' %}
+    {% if is_enrolled %}
+    <span class="badge bg-success">You are enrolled</span>
+    {% else %}
+    <form method="POST" action="{% url 'enroll_course' course.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success">Enroll in this Course</button>
+    </form>
+    {% endif %}
+{% endif %}
+
+<h3 class="mt-4">Lessons</h3>
+{% if is_owner %}
+<a href="{% url 'add_lesson' course.id %}" class="btn btn-primary mb-3">Add Lesson</a>
+{% endif %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Type</th>
+            {% if is_owner %}
+            <th>Action</th>
+            <th>Action</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for lesson in lessons %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>
+                {% if can_view_lessons %}
+                <a href="{% url 'lesson_detail' lesson.id %}">{{lesson.title}}</a>
+                {% else %}
+                {{lesson.title}}
+                {% endif %}
+            </td>
+            <td>{{lesson.lesson_type}}</td>
+            {% if is_owner %}
+            <td><a href="{% url 'update_lesson' lesson.id %}" class="btn btn-primary btn-sm">Edit</a></td>
+            <td><a href="{% url 'delete_lesson' lesson.id %}" class="btn btn-danger btn-sm">Delete</a></td>
+            {% endif %}
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No lessons added yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h3 class="mt-4">Quizzes</h3>
+{% if is_owner %}
+<a href="{% url 'add_quiz' course.id %}" class="btn btn-primary mb-3">Add Quiz</a>
+{% endif %}
+<ul class="list-group mb-4">
+    {% for quiz in quizzes %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>{{quiz.title}} <small class="text-muted">(pass mark {{quiz.pass_mark}}%)</small></span>
+        {% if is_owner %}
+        <a href="{% url 'manage_quiz' quiz.id %}" class="btn btn-info btn-sm">Manage</a>
+        {% elif is_enrolled and request.user.user_profile.role == 'Student' %}
+        <a href="{% url 'take_quiz' quiz.id %}" class="btn btn-success btn-sm">Take Quiz</a>
+        {% endif %}
+    </li>
+    {% empty %}
+    <li class="list-group-item">No quizzes added yet.</li>
+    {% endfor %}
+</ul>
+{% if is_owner %}
+<a href="{% url 'update_course' course.id %}" class="btn btn-primary">Edit Course</a>
+<a href="{% url 'delete_course' course.id %}" class="btn btn-danger">Delete Course</a>
+{% endif %}
+<a href="{% url 'course_list' %}" class="btn btn-secondary">Back to Courses</a>
+{% endblock content %}

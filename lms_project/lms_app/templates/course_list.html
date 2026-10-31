@@ -1,0 +1,54 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>Courses</h1>
+
+<form method="GET" class="row g-2 mb-4">
+    <div class="col-md-5">
+        <input type="text" name="q" value="{{search}}" class="form-control" placeholder="Search courses">
+    </div>
+    <div class="col-md-4">
+        <select name="category" class="form-select">
+            <option value="">All categories</option>
+            {% for c in categories %}
+            <option value="{{c.id}}" {% if c.id|stringformat:"s" == category_id %}selected{% endif %}>{{c.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="{% url 'course_list' %}" class="btn btn-secondary">Reset</a>
+    </div>
+</form>
+
+<div class="row">
+    {% for data in courses %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            {% if data.thumbnail %}
+            <img src="{{data.thumbnail.url}}" class="card-img-top" alt="{{data.title}}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="card-title">{{data.title}}</h5>
+                {% if data.approval_status != 'Approved' %}
+                <span class="badge {% if data.approval_status == 'Pending' %}bg-warning text-dark{% else %}bg-danger{% endif %}">{{data.approval_status}}</span>
+                {% endif %}
+                <p class="card-text">{{data.description|truncatechars:100}}</p>
+                <p class="mb-1"><small>Category: {{data.category.name|default:"None"}}</small></p>
+                <p class="mb-1"><small>Level: {{data.level}}</small></p>
+                <p class="mb-1"><small>Instructor: {{data.instructor.user_profile.name|default:data.instructor.username}}</small></p>
+                <p class="mb-1"><small>Rating: {{data.average_rating}} / 5</small></p>
+                <p><small>{{data.lesson_count}} lessons, {{data.enrolled_count}} students</small></p>
+                <a href="{% url 'course_detail' data.id %}" class="btn btn-primary">View Course</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No courses found.</p>
+    {% endfor %}
+</div>
+{% endblock content %}

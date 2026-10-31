@@ -1,0 +1,33 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>{{quiz.title}}</h1>
+<p>Course: {{quiz.course.title}} | Pass mark: {{quiz.pass_mark}}%</p>
+
+<a href="{% url 'add_question' quiz.id %}" class="btn btn-primary mb-3">Add Question</a>
+<a href="{% url 'delete_quiz' quiz.id %}" class="btn btn-danger mb-3">Delete Quiz</a>
+<a href="{% url 'course_detail' quiz.course.id %}" class="btn btn-secondary mb-3">Back to Course</a>
+
+{% for question in questions %}
+<div class="card mb-3">
+    <div class="card-header d-flex justify-content-between">
+        <span>Q{{forloop.counter}}. {{question.text}}</span>
+        <a href="{% url 'delete_question' question.id %}" class="btn btn-danger btn-sm">Delete</a>
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for choice in question.choices.all %}
+        <li class="list-group-item">
+            {{choice.text}}
+            {% if choice.is_correct %}<span class="badge bg-success">Correct</span>{% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% empty %}
+<p>No questions yet. Click "Add Question" to start.</p>
+{% endfor %}
+{% endblock content %}

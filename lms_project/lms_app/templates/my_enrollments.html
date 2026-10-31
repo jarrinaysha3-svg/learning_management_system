@@ -1,0 +1,35 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>My Learning</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Course</th>
+            <th>Progress</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in enrollments %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{data.course.title}}</td>
+            <td>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{data.progress}}%">{{data.progress}}%</div>
+                </div>
+            </td>
+            <td><a href="{% url 'course_detail' data.course.id %}" class="btn btn-primary">Continue</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="4">You have not enrolled in any course yet. <a href="{% url 'course_list' %}">Browse courses</a></td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock content %}

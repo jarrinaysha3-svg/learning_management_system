@@ -1,0 +1,47 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>Instructors</h1>
+
+<form method="GET" class="row g-2 mb-4">
+    <div class="col-md-6">
+        <input type="text" name="q" value="{{search}}" class="form-control" placeholder="Search by name, username or email">
+    </div>
+    <div class="col-md-4">
+        <button type="submit" class="btn btn-primary">Search</button>
+        <a href="{% url 'instructor_list' %}" class="btn btn-secondary">Reset</a>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Courses</th>
+            <th>Joined</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in instructors %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{data.user_profile.name|default:"-"}}</td>
+            <td>{{data.username}}</td>
+            <td>{{data.email|default:"-"}}</td>
+            <td>{{data.course_count}}</td>
+            <td>{{data.date_joined|date:"d M Y"}}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6">No instructors found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'dashboard_view' %}" class="btn btn-secondary">Back to Dashboard</a>
+{% endblock content %}

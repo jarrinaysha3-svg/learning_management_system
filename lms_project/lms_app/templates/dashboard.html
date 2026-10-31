@@ -1,0 +1,232 @@
+{% extends 'master/base.html' %}
+
+{% block page_title %}
+{{title}}
+{% endblock page_title %}
+
+{% block content %}
+<h1>Welcome {{request.user.username}}!</h1>
+<p>Role: {{role}}</p>
+
+{% if role == 'Admin' %}
+<div class="row mb-4">
+    <div class="col-md-2">
+        <div class="card">
+            <div class="card-header">Students</div>
+            <div class="card-body"><h5 class="card-title">{{total_students}}</h5></div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card">
+            <div class="card-header">Instructors</div>
+            <div class="card-body">
+                <h5 class="card-title">{{total_instructors}}</h5>
+                <a href="{% url 'instructor_list' %}" class="btn btn-primary btn-sm">View Instructors</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card">
+            <div class="card-header">Courses</div>
+            <div class="card-body"><h5 class="card-title">{{total_courses}}</h5></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">Enrollments</div>
+            <div class="card-body"><h5 class="card-title">{{total_enrollments}}</h5></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">Pending Approval</div>
+            <div class="card-body"><h5 class="card-title">{{pending_count}}</h5></div>
+        </div>
+    </div>
+</div>
+
+<h3>Courses Waiting for Approval</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Title</th>
+            <th>Instructor</th>
+            <th>Category</th>
+            <th>Lessons</th>
+            <th>Submitted</th>
+            <th>Action</th>
+            <th>Action</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in pending_courses %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{data.title}}</td>
+            <td>{{data.instructor.user_profile.name|default:data.instructor.username}}</td>
+            <td>{{data.category.name|default:"None"}}</td>
+            <td>{{data.lesson_count}}</td>
+            <td>{{data.created_at|date:"d M Y"}}</td>
+            <td><a href="{% url 'course_detail' data.id %}" class="btn btn-info btn-sm">View</a></td>
+            <td>
+                <form method="POST" action="{% url 'approve_course' data.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="{% url 'reject_course' data.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="9">No courses are waiting for approval.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 class="mt-4">Most Popular Courses</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Title</th>
+            <th>Instructor</th>
+            <th>Students</th>
+            <th>Rating</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in popular_courses %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td><a href="{% url 'course_detail' data.id %}">{{data.title}}</a></td>
+            <td>{{data.instructor.user_profile.name|default:data.instructor.username}}</td>
+            <td>{{data.student_count}}</td>
+            <td>{{data.average_rating}} / 5</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">No approved courses yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% elif role == 'Instructor' %}
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">My Courses</div>
+            <div class="card-body"><h5 class="card-title">{{total_courses}}</h5></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">Approved</div>
+            <div class="card-body"><h5 class="card-title">{{approved_count}}</h5></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-header">Pending Approval</div>
+            <div class="card-body"><h5 class="card-title">{{pending_count}}</h5></div>
+            <div class="card">
+                <div class="card-header">Students</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{total_students}}</h5>
+                    <a href="{% url 'student_list' %}" class="btn btn-primary btn-sm">View Students</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        
+    </div>
+</div>
+
+<h3>My Courses</h3>
+<a href="{% url 'add_course' %}" class="btn btn-primary mb-3">Add Course</a>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Lessons</th>
+            <th>Students</th>
+            <th>Rating</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in courses %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{data.title}}</td>
+            <td>
+                <span class="badge {% if data.approval_status == 'Approved' %}bg-success{% elif data.approval_status == 'Pending' %}bg-warning text-dark{% else %}bg-danger{% endif %}">{{data.approval_status}}</span>
+            </td>
+            <td>{{data.lesson_count}}</td>
+            <td>{{data.enrolled_count}}</td>
+            <td>{{data.average_rating}} / 5</td>
+            <td><a href="{% url 'course_detail' data.id %}" class="btn btn-info btn-sm">Manage</a></td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">You have not created any course yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3 class="mt-4">Recent Enrollments</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Student</th>
+            <th>Course</th>
+            <th>Enrolled</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in recent_enrollments %}
+        <tr>
+            <td>{{data.student.user_profile.name|default:data.student.username}}</td>
+            <td>{{data.course.title}}</td>
+            <td>{{data.enrolled_at|date:"d M Y"}}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">No students have enrolled yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% else %}
+<h3>My Enrolled Courses</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SL</th>
+            <th>Course</th>
+            <th>Progress</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for data in enrollments %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{data.course.title}}</td>
+            <td>
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: {{data.progress}}%">{{data.progress}}%</div>
+                </div>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">You have not enrolled in any course yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock content %}
